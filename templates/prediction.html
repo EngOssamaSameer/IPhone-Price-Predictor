@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        AI Prediction Result
+    </title>
+
+
+    <style>
+
+        * {
+
+            box-sizing: border-box;
+
+            margin: 0;
+
+            padding: 0;
+
+            font-family: Arial, sans-serif;
+
+        }
+
+
+        body {
+
+            min-height: 100vh;
+
+            background:
+
+                radial-gradient(
+                    circle at 15% 15%,
+                    #283d86,
+                    transparent 30%
+                ),
+
+                radial-gradient(
+                    circle at 85% 85%,
+                    #4b207c,
+                    transparent 30%
+                ),
+
+                #070a14;
+
+            color: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 30px;
+
+        }
+
+
+        .container {
+
+            width: 100%;
+
+            max-width: 850px;
+
+            text-align: center;
+
+        }
+
+
+        /* Badge */
+
+        .badge {
+
+            display: inline-block;
+
+            padding: 8px 18px;
+
+            border:
+
+                1px solid #6578e8;
+
+            border-radius: 30px;
+
+            color: #aebcff;
+
+            background:
+
+                rgba(
+                    102,
+                    126,
+                    234,
+                    0.1
+                );
+
+            font-size: 13px;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        h1 {
+
+            font-size: 40px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .subtitle {
+
+            color: #929ab3;
+
+            margin-bottom: 35px;
+
+        }
+
+
+        /* Result Card */
+
+        .result-card {
+
+            background:
+
+                rgba(
+                    17,
+                    22,
+                    40,
+                    0.94
+                );
+
+            border:
+
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.08
+                );
+
+            border-radius: 25px;
+
+            padding: 40px;
+
+            box-shadow:
+
+                0 25px 70px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    0.5
+                );
+
+        }
+
+
+        /* Phone Image */
+
+        .phone-image {
+
+            width: 270px;
+
+            height: 270px;
+
+            margin:
+                0 auto 25px;
+
+            display: flex;
+
+            justify-content:
+                center;
+
+            align-items:
+                center;
+
+            background:
+
+                radial-gradient(
+                    circle,
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        0.06
+                    ),
+                    transparent 70%
+                );
+
+            border-radius: 30px;
+
+        }
+
+
+        .phone-image img {
+
+            width: 100%;
+
+            height: 100%;
+
+            object-fit: contain;
+
+            border-radius: 25px;
+
+        }
+
+
+        /* Phone Name */
+
+        .phone {
+
+            font-size: 25px;
+
+            font-weight: bold;
+
+            margin-bottom: 25px;
+
+            color: #e9ecf8;
+
+        }
+
+
+        /* Price */
+
+        .result-label {
+
+            color: #929ab3;
+
+            font-size: 15px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .price {
+
+            font-size: 52px;
+
+            font-weight: bold;
+
+            background:
+
+                linear-gradient(
+                    90deg,
+                    #8fa8ff,
+                    #c19cff
+                );
+
+            -webkit-background-clip: text;
+
+            -webkit-text-fill-color:
+                transparent;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        .ai-text {
+
+            color: #7f879f;
+
+            font-size: 13px;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        /* Details */
+
+        .details {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 12px;
+
+            margin-top: 25px;
+
+        }
+
+
+        .detail {
+
+            background: #101528;
+
+            border:
+
+                1px solid #282f48;
+
+            border-radius: 12px;
+
+            padding: 15px;
+
+        }
+
+
+        .detail-title {
+
+            color: #707890;
+
+            font-size: 12px;
+
+            margin-bottom: 7px;
+
+        }
+
+
+        .detail-value {
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+        }
+
+
+        /* Button */
+
+        .back-btn {
+
+            display: inline-block;
+
+            margin-top: 30px;
+
+            padding: 14px 25px;
+
+            border-radius: 12px;
+
+            background:
+
+                linear-gradient(
+                    90deg,
+                    #667eea,
+                    #764ba2
+                );
+
+            color: white;
+
+            text-decoration: none;
+
+            font-weight: bold;
+
+            transition: 0.3s;
+
+        }
+
+
+        .back-btn:hover {
+
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+
+                0 10px 25px
+                rgba(
+                    102,
+                    126,
+                    234,
+                    0.3
+                );
+
+        }
+
+
+        /* Mobile */
+
+        @media(max-width:650px) {
+
+            .details {
+
+                grid-template-columns:
+                    1fr 1fr;
+
+            }
+
+
+            h1 {
+
+                font-size: 32px;
+
+            }
+
+
+            .price {
+
+                font-size: 40px;
+
+            }
+
+
+            .phone-image {
+
+                width: 220px;
+
+                height: 220px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <div class="badge">
+
+        ✦ AI PREDICTION RESULT
+
+    </div>
+
+
+    <h1>
+
+        Estimated iPhone Price
+
+    </h1>
+
+
+    <p class="subtitle">
+
+        Machine Learning powered
+        price estimation
+
+    </p>
+
+
+    <div class="result-card">
+
+
+        <!-- iPhone Image -->
+
+        <div class="phone-image">
+
+            <img
+                src="{{ image_url }}"
+                alt="{{ model }}"
+                onerror="
+                    this.style.display='none';
+                "
+            >
+
+        </div>
+
+
+        <!-- Model -->
+
+        <div class="phone">
+
+            {{ model }}
+
+        </div>
+
+
+        <!-- Price -->
+
+        <div class="result-label">
+
+            Estimated Market Price
+
+        </div>
+
+
+        <div class="price">
+
+            {{ prediction }} EGP
+
+        </div>
+
+
+        <div class="ai-text">
+
+            Prediction generated using a
+            trained Random Forest Regression model.
+
+        </div>
+
+
+        <!-- Specifications -->
+
+        <div class="details">
+
+
+            <div class="detail">
+
+                <div class="detail-title">
+
+                    RAM
+
+                </div>
+
+                <div class="detail-value">
+
+                    {{ ram }} GB
+
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-title">
+
+                    Storage
+
+                </div>
+
+                <div class="detail-value">
+
+                    {{ storage }} GB
+
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-title">
+
+                    Color
+
+                </div>
+
+                <div class="detail-value">
+
+                    {{ color }}
+
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-title">
+
+                    Battery Health
+
+                </div>
+
+                <div class="detail-value">
+
+                    {{ battery }}%
+
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-title">
+
+                    Warranty
+
+                </div>
+
+                <div class="detail-value">
+
+                    {{ warranty }}
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- Back -->
+
+        <a
+            href="/"
+            class="back-btn"
+        >
+
+            ← Predict Another iPhone
+
+        </a>
+
+
+    </div>
+
+</div>
+
+
+</body>
+
+</html>

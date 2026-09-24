@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        iPhone AI Price Predictor
+    </title>
+
+
+    <style>
+
+        * {
+
+            box-sizing: border-box;
+
+            margin: 0;
+
+            padding: 0;
+
+            font-family: Arial, sans-serif;
+
+        }
+
+
+        body {
+
+            min-height: 100vh;
+
+            background:
+
+                radial-gradient(
+                    circle at 10% 10%,
+                    #283d86,
+                    transparent 30%
+                ),
+
+                radial-gradient(
+                    circle at 90% 90%,
+                    #4b207c,
+                    transparent 30%
+                ),
+
+                #070a14;
+
+            color: white;
+
+            padding: 45px 20px;
+
+        }
+
+
+        .container {
+
+            max-width: 900px;
+
+            margin: auto;
+
+        }
+
+
+        /* Header */
+
+        .header {
+
+            text-align: center;
+
+            margin-bottom: 35px;
+
+        }
+
+
+        .badge {
+
+            display: inline-block;
+
+            padding: 8px 18px;
+
+            border:
+
+                1px solid #6578e8;
+
+            border-radius: 30px;
+
+            color: #aebcff;
+
+            background:
+
+                rgba(
+                    102,
+                    126,
+                    234,
+                    0.10
+                );
+
+            font-size: 13px;
+
+            margin-bottom: 18px;
+
+        }
+
+
+        h1 {
+
+            font-size: 44px;
+
+            margin-bottom: 12px;
+
+            background:
+
+                linear-gradient(
+                    90deg,
+                    #ffffff,
+                    #91a5ff
+                );
+
+            -webkit-background-clip: text;
+
+            -webkit-text-fill-color: transparent;
+
+        }
+
+
+        .subtitle {
+
+            color: #9da5bd;
+
+            font-size: 16px;
+
+        }
+
+
+        /* Main Card */
+
+        .card {
+
+            background:
+
+                rgba(
+                    17,
+                    22,
+                    40,
+                    0.92
+                );
+
+            border:
+
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.08
+                );
+
+            border-radius: 25px;
+
+            padding: 38px;
+
+            box-shadow:
+
+                0 25px 70px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    0.5
+                );
+
+        }
+
+
+        .section-title {
+
+            font-size: 20px;
+
+            margin-bottom: 25px;
+
+            color: #e9ecf8;
+
+        }
+
+
+        /* Form */
+
+        .form-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 24px;
+
+        }
+
+
+        .form-group {
+
+            display: flex;
+
+            flex-direction: column;
+
+        }
+
+
+        label {
+
+            color: #dce1f0;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            margin-bottom: 9px;
+
+        }
+
+
+        select {
+
+            width: 100%;
+
+            padding: 15px;
+
+            border-radius: 12px;
+
+            border:
+
+                1px solid #303752;
+
+            background: #101528;
+
+            color: white;
+
+            font-size: 15px;
+
+            outline: none;
+
+            cursor: pointer;
+
+        }
+
+
+        select:focus {
+
+            border-color: #7286ff;
+
+            box-shadow:
+
+                0 0 0 3px
+                rgba(
+                    114,
+                    134,
+                    255,
+                    0.12
+                );
+
+        }
+
+
+        select:disabled {
+
+            opacity: 0.45;
+
+            cursor: not-allowed;
+
+        }
+
+
+        /* Battery */
+
+        .battery-box {
+
+            grid-column: span 2;
+
+            margin-top: 5px;
+
+        }
+
+
+        .battery-header {
+
+            display: flex;
+
+            justify-content:
+                space-between;
+
+        }
+
+
+        #batteryValue {
+
+            color: #8fa8ff;
+
+            font-weight: bold;
+
+        }
+
+
+        input[type="range"] {
+
+            width: 100%;
+
+            margin-top: 15px;
+
+            accent-color: #7186ff;
+
+            cursor: pointer;
+
+        }
+
+
+        /* Hint */
+
+        .hint {
+
+            color: #707890;
+
+            font-size: 12px;
+
+            margin-top: 7px;
+
+        }
+
+
+        /* Button */
+
+        .predict-btn {
+
+            width: 100%;
+
+            margin-top: 32px;
+
+            padding: 17px;
+
+            border: none;
+
+            border-radius: 14px;
+
+            background:
+
+                linear-gradient(
+                    90deg,
+                    #667eea,
+                    #764ba2
+                );
+
+            color: white;
+
+            font-size: 17px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+
+        }
+
+
+        .predict-btn:hover {
+
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+
+                0 12px 35px
+                rgba(
+                    102,
+                    126,
+                    234,
+                    0.35
+                );
+
+        }
+
+
+        /* Mobile */
+
+        @media(max-width:700px) {
+
+            .form-grid {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .battery-box {
+
+                grid-column: span 1;
+
+            }
+
+
+            h1 {
+
+                font-size: 34px;
+
+            }
+
+
+            .card {
+
+                padding: 25px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <!-- Header -->
+
+    <div class="header">
+
+        <div class="badge">
+
+            ✦ AI POWERED PRICE PREDICTION
+
+        </div>
+
+
+        <h1>
+
+            iPhone Price Predictor
+
+        </h1>
+
+
+        <p class="subtitle">
+
+            Estimate the market price of your
+            used iPhone using Machine Learning
+
+        </p>
+
+    </div>
+
+
+    <!-- Form Card -->
+
+    <div class="card">
+
+
+        <div class="section-title">
+
+            Enter iPhone Specifications
+
+        </div>
+
+
+        <form
+            action="/predict"
+            method="POST"
+        >
+
+
+            <div class="form-grid">
+
+
+                <!-- MODEL -->
+
+                <div class="form-group">
+
+                    <label>
+
+                        iPhone Model
+
+                    </label>
+
+
+                    <select
+                        id="model"
+                        name="model"
+                        required
+                    >
+
+                        <option value="">
+
+                            Select iPhone Model
+
+                        </option>
+
+
+                        {% for item in models %}
+
+                        <option value="{{ item }}">
+
+                            {{ item }}
+
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <!-- RAM -->
+
+                <div class="form-group">
+
+                    <label>
+
+                        RAM
+
+                    </label>
+
+
+                    <select
+                        name="ram_gb"
+                        required
+                    >
+
+                        <option value="">
+
+                            Select RAM
+
+                        </option>
+
+
+                        <option value="4">
+
+                            4 GB
+
+                        </option>
+
+
+                        <option value="6">
+
+                            6 GB
+
+                        </option>
+
+
+                        <option value="8">
+
+                            8 GB
+
+                        </option>
+
+
+                        <option value="12">
+
+                            12 GB
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- STORAGE -->
+
+                <div class="form-group">
+
+                    <label>
+
+                        Storage
+
+                    </label>
+
+
+                    <select
+                        id="storage"
+                        name="storage_gb"
+                        required
+                        disabled
+                    >
+
+                        <option value="">
+
+                            Select model first
+
+                        </option>
+
+                    </select>
+
+
+                    <div class="hint">
+
+                        Available storage depends
+                        on the selected model.
+
+                    </div>
+
+                </div>
+
+
+                <!-- COLOR -->
+
+                <div class="form-group">
+
+                    <label>
+
+                        Color
+
+                    </label>
+
+
+                    <select
+                        id="color"
+                        name="color"
+                        required
+                        disabled
+                    >
+
+                        <option value="">
+
+                            Select model first
+
+                        </option>
+
+                    </select>
+
+
+                    <div class="hint">
+
+                        Available colors depend
+                        on the selected model.
+
+                    </div>
+
+                </div>
+
+
+                <!-- WARRANTY -->
+
+                <div class="form-group">
+
+                    <label>
+
+                        Warranty
+
+                    </label>
+
+
+                    <select
+                        name="warranty"
+                        required
+                    >
+
+                        <option value="">
+
+                            Select Warranty
+
+                        </option>
+
+
+                        {% for item in warranties %}
+
+                        <option value="{{ item }}">
+
+                            {{ item }}
+
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <!-- BATTERY -->
+
+                <div class="form-group battery-box">
+
+                    <div class="battery-header">
+
+                        <label>
+
+                            Battery Health
+
+                        </label>
+
+
+                        <span id="batteryValue">
+
+                            85%
+
+                        </span>
+
+                    </div>
+
+
+                    <input
+                        type="range"
+                        name="battery_health_pct"
+                        min="50"
+                        max="100"
+                        value="85"
+                        oninput="
+                        document.getElementById(
+                            'batteryValue'
+                        ).innerText =
+                        this.value + '%'
+                        "
+                    >
+
+                </div>
+
+
+            </div>
+
+
+            <!-- BUTTON -->
+
+            <button
+                class="predict-btn"
+                type="submit"
+            >
+
+                ✦ Predict iPhone Price
+
+            </button>
+
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<script>
+
+
+    /*
+        Data comes directly from
+        the original dataset.
+    */
+
+    const modelData =
+        {{ model_data | tojson }};
+
+
+    const modelSelect =
+        document.getElementById(
+            "model"
+        );
+
+
+    const storageSelect =
+        document.getElementById(
+            "storage"
+        );
+
+
+    const colorSelect =
+        document.getElementById(
+            "color"
+        );
+
+
+    /*
+        When the user selects
+        an iPhone model
+    */
+
+    modelSelect.addEventListener(
+        "change",
+        function () {
+
+
+            const selectedModel =
+                this.value;
+
+
+            /*
+                Clear previous
+                options
+            */
+
+            storageSelect.innerHTML =
+                '<option value="">Select Storage</option>';
+
+
+            colorSelect.innerHTML =
+                '<option value="">Select Color</option>';
+
+
+            /*
+                No model selected
+            */
+
+            if (!selectedModel) {
+
+                storageSelect.disabled =
+                    true;
+
+                colorSelect.disabled =
+                    true;
+
+                return;
+
+            }
+
+
+            /*
+                Get data for
+                selected model
+            */
+
+            const data =
+                modelData[selectedModel];
+
+
+            /*
+                Add Storage
+            */
+
+            data.storage.forEach(
+                function (storage) {
+
+
+                    const option =
+                        document.createElement(
+                            "option"
+                        );
+
+
+                    option.value =
+                        storage;
+
+
+                    option.textContent =
+                        storage + " GB";
+
+
+                    storageSelect.appendChild(
+                        option
+                    );
+
+                }
+            );
+
+
+            /*
+                Add Colors
+            */
+
+            data.colors.forEach(
+                function (color) {
+
+
+                    const option =
+                        document.createElement(
+                            "option"
+                        );
+
+
+                    option.value =
+                        color;
+
+
+                    option.textContent =
+                        color;
+
+
+                    colorSelect.appendChild(
+                        option
+                    );
+
+                }
+            );
+
+
+            /*
+                Enable dropdowns
+            */
+
+            storageSelect.disabled =
+                false;
+
+            colorSelect.disabled =
+                false;
+
+        }
+
+    );
+
+
+</script>
+
+
+</body>
+
+</html>
